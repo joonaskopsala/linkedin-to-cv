@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "LinkedIn to CV Builder",
+  "version": "1.0.0",
+  "description": "Extract profile data from LinkedIn and generate a polished, printable CV.",
+  "icons": {
+    "16": "icons/icon.svg",
+    "48": "icons/icon.svg",
+    "128": "icons/icon.svg"
+  },
+  "permissions": ["activeTab", "scripting", "downloads", "tabs"],
+  "host_permissions": ["https://www.linkedin.com/*"],
+  "action": {
+    "default_title": "LinkedIn to CV",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon.svg",
+      "48": "icons/icon.svg",
+      "128": "icons/icon.svg"
+    }
+  }
+}

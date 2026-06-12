@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LinkedIn to CV</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="app">
+      <section class="toolbar">
+        <div class="url-check">
+          <span id="urlIndicator" class="indicator inactive"></span>
+          <span id="urlStatus" class="url-status">Not on LinkedIn profile</span>
+        </div>
+
+        <label class="theme">
+          CV Style
+          <select id="theme">
+            <option value="harvard">Harvard Style</option>
+            <option value="editorial">Modern Editorial</option>
+            <option value="executive">Executive Minimal</option>
+          </select>
+        </label>
+
+        <label class="checkbox-label">
+          <input type="checkbox" id="reviewSkillsCheckbox" />
+          <span>Review & edit skills before export</span>
+        </label>
+
+        <button id="exportBtn" class="btn btn-primary" disabled>
+          Export PDF from Current Profile Tab
+        </button>
+      </section>
+
+      <p id="status" class="status">Ready.</p>
+
+      <!-- Skills Review Modal -->
+      <div id="skillsModal" class="modal hidden">
+        <div class="modal-content">
+          <h2>Review Skills</h2>
+          <p class="modal-description">
+            Check the skills you want to include in your CV. You can also add
+            new skills manually.
+          </p>
+
+          <div class="skills-section">
+            <h3>Extracted Skills</h3>
+            <div id="skillsList" class="skills-list"></div>
+          </div>
+
+          <div class="add-skill-section">
+            <h3>Add New Skill</h3>
+            <div class="add-skill-input-group">
+              <input
+                type="text"
+                id="newSkillInput"
+                placeholder="Type skill name..."
+                class="skill-input"
+              />
+              <button id="addSkillBtn" class="btn btn-secondary">Add</button>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button id="cancelSkillsBtn" class="btn btn-secondary">
+              Cancel
+            </button>
+            <button id="doneSkillsBtn" class="btn btn-primary">
+              Export PDF
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="../vendor/jspdf.umd.min.js"></script>
+    <script src="../vendor/html2canvas.min.js"></script>
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>
