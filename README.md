@@ -1,98 +1,65 @@
 # LinkedIn to CV Builder
 
-A Chrome Manifest V3 extension that extracts profile data from the currently open LinkedIn profile tab and exports a polished CV as PDF.
+A Chrome (Manifest V3) extension that converts your LinkedIn PDF export into a polished, downloadable CV — in three click.
 
-## What this extension does
+## How it works
 
-- Validates that the active tab is a LinkedIn profile URL in this format: `https://www.linkedin.com/in/username/`
-- Extracts profile sections from the page (name, headline, about, experience, education, skills, contact)
-- Generates a styled CV using one of three layouts:
-  - Harvard Style
-  - Modern Editorial
-  - Executive Minimal
-- Exports directly to PDF by default
+1. **Export your LinkedIn profile as a PDF**  
+   On LinkedIn: click _Me → View Profile → More → Save to PDF_
 
-## Local setup (step by step)
+2. **Open the extension popup** and drag-and-drop (or click to select) the downloaded PDF.
 
-### 1. Get the project locally
+3. **Choose a CV style** (Harvard, Editorial, or Executive), optionally review and edit your skills, then click **Export CV as PDF**.
 
-If you already have this folder on your machine, skip this step.
+The extension parses the PDF locally in your browser — no data leaves your machine.
 
-```bash
-git clone <your-repo-url>
-cd linkedin_to_cv
-```
+**Profile photo (optional):** If you are logged into LinkedIn, the extension can open a background tab to fetch your profile photo. If you are not logged in, or if the photo cannot be retrieved, the CV is still generated without it.
 
-### 2. Open Chrome extensions page
+---
 
-Open this URL in Chrome:
+## Features
 
-`chrome://extensions`
+- **Three CV styles** — Harvard (traditional), Editorial (modern), Executive (executive summary)
+- **Skills editor** — review, remove, or add skills before exporting
+- **Profile photo** — automatically fetched from LinkedIn if you are logged in
+- **Fully local** — PDF parsing runs in-browser via [PDF.js](https://mozilla.github.io/pdf.js/); nothing is sent to a server
 
-### 3. Enable Developer Mode
+---
 
-Turn on the **Developer mode** toggle in the top-right corner.
+## Installation (unpacked extension)
 
-### 4. Load the extension
+1. Clone or download this repository.
+2. Open Chrome and navigate to `chrome://extensions`.
+3. Enable **Developer mode** (top-right toggle).
+4. Click **Load unpacked** and select the repository folder.
+5. The extension icon will appear in your toolbar.
 
-1. Click **Load unpacked**
-2. Select this project root folder (the folder containing `manifest.json`)
+> The extension requires **Chrome 116+** (Manifest V3 with ES module support).
 
-Example path on Windows:
-
-`C:/Projects/linkedin_to_cv`
-
-### 5. Pin the extension (recommended)
-
-1. Click the puzzle icon in Chrome toolbar
-2. Pin **LinkedIn to CV Builder** for quick access
-
-## How to use
-
-1. Open a LinkedIn profile page, for example: `https://www.linkedin.com/in/username/`
-2. Click the extension icon
-3. Choose a CV style from the dropdown
-4. Click **Export PDF from Current Profile Tab**
-5. Wait for extraction and PDF generation to finish
-
-## How to update after code changes
-
-When you edit extension files locally:
-
-1. Go to `chrome://extensions`
-2. Find **LinkedIn to CV Builder**
-3. Click the **Reload** button on the extension card
-4. Re-run export from a LinkedIn profile tab
-
-## Quick validation commands (optional)
-
-Use these to catch JavaScript syntax issues before reloading in Chrome:
-
-```bash
-node --check popup/popup.js
-node --check extractor/linkedinExtractor.js
-node --check renderer/cvTemplates.js
-```
+---
 
 ## Project structure
 
-- `manifest.json`: Extension metadata, permissions, popup entry
-- `popup/`: Popup UI and export flow controller
-- `extractor/`: LinkedIn DOM extraction logic
-- `renderer/`: CV HTML template and styles
-- `vendor/`: Bundled `html2canvas` and `jsPDF` libraries
+```
+manifest.json           Extension manifest (MV3)
+popup/
+  popup.html            Extension popup UI
+  popup.css             Popup styles
+  popup.js              Popup logic: PDF upload, parsing, export
+extractor/
+  pdfParser.js          LinkedIn PDF → structured profile object (uses PDF.js)
+  photoExtractor.js     Content script injected into LinkedIn to fetch profile photo
+renderer/
+  cvTemplates.js        HTML CV templates for each style
+vendor/
+  pdf.min.mjs           PDF.js library (ES module build)
+  pdf.worker.min.mjs    PDF.js worker
+  html2canvas.min.js    html2canvas for PDF rendering
+  jspdf.umd.min.js      jsPDF for PDF generation
+```
 
-## Notes
+---
 
-- The extension runs client-side on the active tab.
-- No backend service is required.
-- LinkedIn DOM structure changes over time; selectors may need maintenance.
+## Privacy
 
-## Troubleshooting
-
-- **Button does nothing**
-  - Ensure the active tab is a LinkedIn profile URL under `/in/`
-- **Old behavior after edits**
-  - Reload the extension in `chrome://extensions`
-- **Data missing in CV**
-  - LinkedIn profile sections vary by account and locale; some fields may not be present in the DOM
+All processing is done locally in your browser. The only external request is the optional tab opened to your own LinkedIn profile page to retrieve your profile photo.

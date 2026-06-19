@@ -127,13 +127,8 @@ function renderPhoto(photoUrl, name) {
   return `<img class="avatar" src="${escapeHtml(photoUrl)}" alt="${escapeHtml(name)} profile photo" />`;
 }
 
-function renderContact(contact, location) {
-  const rows = [
-    contact?.email,
-    contact?.phone,
-    contact?.linkedin,
-    location,
-  ].filter(Boolean);
+function renderContact(contact) {
+  const rows = [contact?.email, contact?.linkedin].filter(Boolean);
 
   if (!rows.length) {
     return "";
@@ -173,10 +168,7 @@ function buildSections(profile) {
       renderExperience(profile.experience || []),
     ),
     education: section("Education", renderEducation(profile.education || [])),
-    contact: section(
-      "Contact",
-      renderContact(profile.contact, profile.location),
-    ),
+    contact: section("Contact", renderContact(profile.contact)),
     skills: section("Skills", renderSkills(profile.skills || [])),
   };
 }
@@ -191,7 +183,7 @@ function harvardLayout(profile, sections) {
           <div>
             <h1>${escapeHtml(profile.name || "Your Name")}</h1>
             <p class="headline">${escapeHtml(profile.headline || "Professional Headline")}</p>
-            ${profile.location ? `<p class="subline">${escapeHtml(profile.location)}</p>` : ""}
+            ${profile.city ? `<p class="subline">${escapeHtml(profile.city)}</p>` : ""}
           </div>
         </div>
         <div class="masthead-grid">
@@ -223,13 +215,13 @@ function editorialLayout(profile, sections) {
           <div>
             <h1>${escapeHtml(profile.name || "Your Name")}</h1>
             <p class="headline">${escapeHtml(profile.headline || "Professional Headline")}</p>
-            ${profile.location ? `<p class="subline">${escapeHtml(profile.location)}</p>` : ""}
+            ${profile.city ? `<p class="subline">${escapeHtml(profile.city)}</p>` : ""}
           </div>
         </div>
         <div class="hero-chips">
           ${profile.contact?.email ? `<span>${escapeHtml(profile.contact.email)}</span>` : ""}
           ${profile.contact?.linkedin ? `<span>${escapeHtml(profile.contact.linkedin)}</span>` : ""}
-          ${profile.location ? `<span>${escapeHtml(profile.location)}</span>` : ""}
+          ${profile.city ? `<span>${escapeHtml(profile.city)}</span>` : ""}
         </div>
       </section>
 
@@ -258,7 +250,7 @@ function executiveLayout(profile, sections) {
           <div>
             <h1>${escapeHtml(profile.name || "Your Name")}</h1>
             <p class="headline">${escapeHtml(profile.headline || "Professional Headline")}</p>
-            ${profile.location ? `<p class="subline">${escapeHtml(profile.location)}</p>` : ""}
+            ${profile.city ? `<p class="subline">${escapeHtml(profile.city)}</p>` : ""}
           </div>
         </div>
         <div class="executive-bar">

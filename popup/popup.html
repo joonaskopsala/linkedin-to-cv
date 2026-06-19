@@ -9,10 +9,19 @@
   <body>
     <main class="app">
       <section class="toolbar">
-        <div class="url-check">
-          <span id="urlIndicator" class="indicator inactive"></span>
-          <span id="urlStatus" class="url-status">Not on LinkedIn profile</span>
-        </div>
+        <!-- PDF upload zone -->
+        <label class="upload-zone" id="uploadZone">
+          <input type="file" id="pdfInput" accept=".pdf" />
+          <div class="upload-zone-content" id="uploadZoneContent">
+            <span class="upload-icon">📄</span>
+            <span class="upload-label"
+              >Drop your LinkedIn PDF here<br />or click to browse</span
+            >
+            <span class="upload-hint">
+              Export from LinkedIn → Me → Save to PDF
+            </span>
+          </div>
+        </label>
 
         <label class="theme">
           CV Style
@@ -25,15 +34,17 @@
 
         <label class="checkbox-label">
           <input type="checkbox" id="reviewSkillsCheckbox" />
-          <span>Review & edit skills before export</span>
+          <span>Review &amp; edit skills before export</span>
         </label>
 
         <button id="exportBtn" class="btn btn-primary" disabled>
-          Export PDF from Current Profile Tab
+          Export CV as PDF
         </button>
       </section>
 
-      <p id="status" class="status">Ready.</p>
+      <p id="status" class="status">
+        Upload your LinkedIn PDF export to get started.
+      </p>
 
       <!-- Skills Review Modal -->
       <div id="skillsModal" class="modal hidden">
