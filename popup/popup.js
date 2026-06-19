@@ -1,6 +1,9 @@
 import { parsePdfToProfile } from "../extractor/pdfParser.js";
 import { buildCvHtml } from "../renderer/cvTemplates.js";
 
+// ─── Cross-browser API shim ──────────────────────────────────────────────────
+const ext = typeof browser !== "undefined" ? browser : chrome;
+
 // ─── State & element refs ────────────────────────────────────────────────────
 
 const state = {
@@ -114,19 +117,19 @@ async function handleFileSelected(file) {
 function waitForTabComplete(tabId, timeoutMs = 12000) {
   return new Promise((resolve) => {
     const timeout = setTimeout(() => {
-      chrome.tabs.onUpdated.removeListener(onUpdated);
+      ext.tabs.onUpdated.removeListener(onUpdated);
       resolve(); // photo is optional — never reject
     }, timeoutMs);
 
     function onUpdated(updatedTabId, changeInfo) {
       if (updatedTabId === tabId && changeInfo.status === "complete") {
         clearTimeout(timeout);
-        chrome.tabs.onUpdated.removeListener(onUpdated);
+        ext.tabs.onUpdated.removeListener(onUpdated);
         resolve();
       }
     }
 
-    chrome.tabs.onUpdated.addListener(onUpdated);
+    ext.tabs.onUpdated.addListener(onUpdated);
   });
 }
 
@@ -135,17 +138,17 @@ async function fetchProfilePhoto(linkedinUrl) {
 
   let tabId = null;
   try {
-    const tab = await chrome.tabs.create({ url: linkedinUrl, active: false });
+    const tab = await ext.tabs.create({ url: linkedinUrl, active: false });
     tabId = tab.id;
 
     await waitForTabComplete(tabId);
 
-    await chrome.scripting.executeScript({
+    await ext.scripting.executeScript({
       target: { tabId },
       files: ["extractor/photoExtractor.js"],
     });
 
-    const [result] = await chrome.scripting.executeScript({
+    const [result] = await ext.scripting.executeScript({
       target: { tabId },
       func: () => {
         if (typeof window.__linkedinToCvExtractPhoto !== "function") return "";
@@ -158,7 +161,7 @@ async function fetchProfilePhoto(linkedinUrl) {
     return ""; // photo is optional
   } finally {
     if (tabId !== null) {
-      chrome.tabs.remove(tabId).catch(() => {});
+      ext.tabs.remove(tabId).catch(() => {});
     }
   }
 }
@@ -291,7 +294,7 @@ async function createPdfFromHtmlCanvas(html, fileName) {
 
     const pdfBlob = dataUrlToBlob(pdf.output("datauristring"));
     const pdfUrl = URL.createObjectURL(pdfBlob);
-    await chrome.downloads.download({
+    await ext.downloads.download({
       url: pdfUrl,
       filename: fileName,
       saveAs: true,

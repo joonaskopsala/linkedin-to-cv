@@ -24,11 +24,5 @@
       "resources": ["vendor/pdf.worker.min.mjs", "vendor/pdf.min.mjs"],
       "matches": ["<all_urls>"]
     }
-  ],
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "linkedin-to-cv@extension",
-      "strict_min_version": "109.0"
-    }
-  }
+  ]
 }

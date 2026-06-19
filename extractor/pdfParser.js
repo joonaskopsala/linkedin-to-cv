@@ -1,7 +1,10 @@
 import * as pdfjsLib from "../vendor/pdf.min.mjs";
 
+// Cross-browser API shim
+const ext = typeof browser !== "undefined" ? browser : chrome;
+
 // Point the pdfjs worker at the extension's bundled copy.
-pdfjsLib.GlobalWorkerOptions.workerSrc = chrome.runtime.getURL(
+pdfjsLib.GlobalWorkerOptions.workerSrc = ext.runtime.getURL(
   "vendor/pdf.worker.min.mjs",
 );
 
